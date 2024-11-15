@@ -6,10 +6,11 @@ interface NumberInputProps {
   value: number;
   onChange: (value: string) => void;
   placeholder?: string;
+  required?: boolean;
   min?: number;
   max?: number;
   step?: string;
-  required?: boolean;
+  helperText?: string;
 }
 
 export function NumberInput({
@@ -21,6 +22,7 @@ export function NumberInput({
   max,
   step = '0.01',
   required,
+  helperText,
 }: NumberInputProps) {
   return (
     <div className="grid gap-4">
@@ -37,6 +39,9 @@ export function NumberInput({
         placeholder={placeholder}
         required={required}
       />
+      {helperText && (
+        <p className="text-sm text-muted-foreground mt-1">{helperText}</p>
+      )}
     </div>
   );
 }

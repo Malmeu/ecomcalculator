@@ -1,28 +1,11 @@
 export async function fetchBlackMarketRate() {
   try {
-    // Récupération des données depuis forexalgerie.com
-    const response = await fetch('http://www.forexalgerie.com');
-    const html = await response.text();
-    
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, 'text/html');
-    
-    // Chercher spécifiquement le taux de vente de l'Euro
-    // Note: Il faudrait adapter le sélecteur selon la structure exacte du site
-    const euroSellRate = doc.querySelector('table tr:contains("Euro") td:nth-child(3)')?.textContent;
-    
-    if (!euroSellRate) {
-      console.warn('Taux de vente non trouvé sur forexalgerie.com');
-      return 252.00; // Valeur par défaut pour la vente
-    }
-    
-    // Convertir le taux en nombre
-    const rate = parseFloat(euroSellRate.replace(/[^0-9.,]/g, '').replace(',', '.'));
-    return rate || 252.00;
-    
+    const response = await fetch('/api/exchange-rate');
+    const data = await response.json();
+    return data.rate;
   } catch (error) {
-    console.error('Erreur lors de la récupération du taux de vente sur forexalgerie.com:', error);
-    return 252.00; // Valeur par défaut en cas d'erreur
+    console.error('Erreur lors de la récupération du taux:', error);
+    return 252.00;
   }
 }
 
