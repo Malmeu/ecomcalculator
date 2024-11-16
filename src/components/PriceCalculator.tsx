@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Calculator, RefreshCcw, DollarSign, Package, Palette, MessageCircle, TrendingUp, Truck, RotateCcw, Settings, PiggyBank } from 'lucide-react';
+import { Calculator, RefreshCcw, DollarSign, Package, Palette, MessageCircle, RotateCcw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Language, TranslationKey, getTranslation } from '@/lib/i18n';
