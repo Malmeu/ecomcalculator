@@ -11,6 +11,7 @@ interface NumberInputProps {
   max?: number;
   step?: string;
   helperText?: string;
+  icon?: React.ReactNode;
 }
 
 export function NumberInput({
@@ -23,24 +24,30 @@ export function NumberInput({
   step = '0.01',
   required,
   helperText,
+  icon,
 }: NumberInputProps) {
   return (
-    <div className="grid gap-4">
-      <Label>
-        {label} {required && <span className="text-destructive">*</span>}
+    <div className="space-y-2">
+      <Label className="flex items-center gap-2 text-white font-bold">
+        {icon}
+        <span>{label}</span>
+        {required && <span className="text-red-400">*</span>}
       </Label>
-      <Input
-        type="number"
-        min={min}
-        max={max}
-        step={step}
-        value={value || ''}
-        onChange={(e) => onChange(e.target.value)}
-        placeholder={placeholder}
-        required={required}
-      />
+      <div className="relative">
+        <Input
+          type="number"
+          min={min}
+          max={max}
+          step={step}
+          value={value || ''}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder={placeholder}
+          required={required}
+          className="bg-gray-700/50 border-gray-600 focus:border-blue-500 rounded-xl pl-4 text-white placeholder:text-gray-400"
+        />
+      </div>
       {helperText && (
-        <p className="text-sm text-muted-foreground mt-1">{helperText}</p>
+        <p className="text-sm text-gray-400">{helperText}</p>
       )}
     </div>
   );

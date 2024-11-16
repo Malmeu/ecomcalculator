@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Calculator, RefreshCcw } from 'lucide-react';
+import { Calculator, RefreshCcw, DollarSign, Package, Palette, MessageCircle, TrendingUp, Truck, RotateCcw, Settings, PiggyBank } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Language, TranslationKey, getTranslation } from '@/lib/i18n';
@@ -9,6 +9,7 @@ import { NumberInput } from '@/components/ui/NumberInput';
 import { LanguageSelector } from '@/components/LanguageSelector';
 import { PriceDisplay } from '@/components/PriceDisplay';
 import { fetchBlackMarketRate } from '@/lib/api';
+import { QuoteOfDay } from './QuoteOfDay';
 
 export function PriceCalculator() {
   const [lang, setLang] = useState<Language>('en');
@@ -67,18 +68,26 @@ export function PriceCalculator() {
   }, []);
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 p-4 sm:p-8">
-      <Card className={`max-w-2xl mx-auto p-6 sm:p-8 space-y-8 ${isRTL ? 'rtl' : 'ltr'}`}>
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight">{t('title')}</h1>
-            <p className="text-muted-foreground mt-1">{t('subtitle')}</p>
-          </div>
+    <div className="min-h-screen w-full bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 p-4 sm:p-8">
+      <div className="max-w-4xl mx-auto mb-8">
+        <div className="text-center mb-8">
+          <h1 className="text-5xl font-bold text-white">
+            EcomCalculator <span className="text-blue-500">🚀</span>
+          </h1>
+          <p className="mt-2 text-gray-400">Optimisez vos marges, maximisez vos profits</p>
+        </div>
+        
+        <QuoteOfDay />
+      </div>
+
+      <Card className={`max-w-2xl mx-auto p-6 sm:p-8 space-y-8 bg-gray-800/50 backdrop-blur-sm border-gray-700 ${isRTL ? 'rtl' : 'ltr'}`}>
+        <div className="flex justify-end">
           <LanguageSelector value={lang} onChange={setLang} />
         </div>
 
         <div className="grid gap-6">
           <NumberInput
+            icon={<DollarSign className="text-blue-400" />}
             label={t('basePrice')}
             value={formData.basePrice}
             onChange={(value) => handleInputChange('basePrice', value)}
@@ -87,6 +96,7 @@ export function PriceCalculator() {
           />
 
           <NumberInput
+            icon={<Package className="text-purple-400" />}
             label={t('quantity')}
             value={formData.quantity}
             onChange={(value) => handleInputChange('quantity', value)}
@@ -95,82 +105,82 @@ export function PriceCalculator() {
             step="1"
           />
 
-          <div className="space-y-4">
-            <NumberInput
-              label={t('creative')}
-              value={formData.creative}
-              onChange={(value) => handleInputChange('creative', value)}
-              placeholder="0.00 DZD"
-              helperText="Ce coût sera divisé par la quantité de produits"
-            />
-          </div>
-
-          <div className="space-y-4">
-            <NumberInput
-              label={t('ads') + " (EUR)"}
-              value={formData.ads}
-              onChange={(value) => handleInputChange('ads', value)}
-              placeholder="0.00 EUR"
-              min={0}
-            />
-            <div className="flex gap-2 items-end">
-              <NumberInput
-                label="Taux de change EUR/DZD (Marché noir)"
-                value={formData.eurToDzdRate}
-                onChange={(value) => handleInputChange('eurToDzdRate', value)}
-                placeholder="250.00"
-                min={0}
-                step="0.01"
-              />
-              <Button 
-                variant="outline" 
-                size="icon"
-                onClick={updateExchangeRate}
-                disabled={isLoadingRate}
-              >
-                <RefreshCcw className={`h-4 w-4 ${isLoadingRate ? 'animate-spin' : ''}`} />
-              </Button>
-            </div>
-            {isLoadingRate && (
-              <div className="text-sm text-muted-foreground">
-                Chargement du taux en cours...
-              </div>
-            )}
-            <select 
-              className="w-full p-2 border rounded"
-              value={formData.adsConversionType}
-              onChange={(e) => handleInputChange('adsConversionType', e.target.value as 'message' | 'call')}
-            >
-              <option value="message">Conversion par message (×6)</option>
-              <option value="call">Conversion par appel (×3)</option>
-            </select>
-            {formData.ads > 0 && (
-              <div className="text-sm text-muted-foreground">
-                Coût en DZD: {(formData.ads * formData.eurToDzdRate).toFixed(2)} DZD
-              </div>
-            )}
-          </div>
-
-          <div className="space-y-4">
-            <NumberInput
-              label={t('returns') + " (Montant fixe en DZD)"}
-              value={formData.returns}
-              onChange={(value) => handleInputChange('returns', value)}
-              placeholder="0.00 DZD"
-              min={0}
-            />
-            <NumberInput
-              label={t('returns') + " (Pourcentage)"}
-              value={formData.returnsPercentage}
-              onChange={(value) => handleInputChange('returnsPercentage', value)}
-              placeholder="0%"
-              min={0}
-              max={100}
-              step="0.1"
-            />
-          </div>
+          <NumberInput
+            icon={<Palette className="text-pink-400" />}
+            label={t('creative')}
+            value={formData.creative}
+            onChange={(value) => handleInputChange('creative', value)}
+            placeholder="0.00 DZD"
+            helperText="Ce coût sera divisé par la quantité de produits"
+          />
 
           <NumberInput
+            icon={<MessageCircle className="text-green-400" />}
+            label={t('ads') + " (EUR)"}
+            value={formData.ads}
+            onChange={(value) => handleInputChange('ads', value)}
+            placeholder="0.00 EUR"
+            min={0}
+          />
+          <div className="flex gap-2 items-end">
+            <NumberInput
+              icon={<RotateCcw className="text-yellow-400" />}
+              label="Taux de change EUR/DZD (Marché noir)"
+              value={formData.eurToDzdRate}
+              onChange={(value) => handleInputChange('eurToDzdRate', value)}
+              placeholder="250.00"
+              min={0}
+              step="0.01"
+            />
+            <Button 
+              variant="outline" 
+              size="icon"
+              onClick={updateExchangeRate}
+              disabled={isLoadingRate}
+            >
+              <RefreshCcw className={`h-4 w-4 ${isLoadingRate ? 'animate-spin' : ''}`} />
+            </Button>
+          </div>
+          {isLoadingRate && (
+            <div className="text-sm text-muted-foreground">
+              Chargement du taux en cours...
+            </div>
+          )}
+          <select 
+            className="w-full p-2 border rounded bg-gray-700/50 border-gray-600 text-white font-semibold"
+            value={formData.adsConversionType}
+            onChange={(e) => handleInputChange('adsConversionType', e.target.value as 'message' | 'call')}
+          >
+            <option value="message" className="bg-gray-800 text-white">Conversion par message (×6)</option>
+            <option value="call" className="bg-gray-800 text-white">Conversion par appel (×3)</option>
+          </select>
+          {formData.ads > 0 && (
+            <div className="text-sm text-white">
+              Coût en DZD: {(formData.ads * formData.eurToDzdRate).toFixed(2)} DZD
+            </div>
+          )}
+
+          <NumberInput
+            icon={<DollarSign className="text-green-400" />}
+            label={t('returns') + " (Montant fixe en DZD)"}
+            value={formData.returns}
+            onChange={(value) => handleInputChange('returns', value)}
+            placeholder="0.00 DZD"
+            min={0}
+          />
+          <NumberInput
+            icon={<DollarSign className="text-yellow-400" />}
+            label={t('returns') + " (Pourcentage)"}
+            value={formData.returnsPercentage}
+            onChange={(value) => handleInputChange('returnsPercentage', value)}
+            placeholder="0%"
+            min={0}
+            max={100}
+            step="0.1"
+          />
+
+          <NumberInput
+            icon={<DollarSign className="text-orange-400" />}
             label={t('risk') + " (% du prix de base)"}
             value={formData.risk}
             onChange={(value) => handleInputChange('risk', value)}
@@ -181,6 +191,7 @@ export function PriceCalculator() {
           />
 
           <NumberInput
+            icon={<DollarSign className="text-purple-400" />}
             label={t('operational')}
             value={formData.operational}
             onChange={(value) => handleInputChange('operational', value)}
@@ -188,6 +199,7 @@ export function PriceCalculator() {
           />
 
           <NumberInput
+            icon={<DollarSign className="text-blue-400" />}
             label={t('profit')}
             value={formData.profit}
             onChange={(value) => handleInputChange('profit', value)}
@@ -199,7 +211,7 @@ export function PriceCalculator() {
 
         <div className="flex flex-col sm:flex-row gap-4 pt-4">
           <Button
-            className="flex-1"
+            className="flex-1 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600"
             onClick={() => setFinalPrice(calculateFinalPrice(formData))}
             disabled={!formData.basePrice}
           >
@@ -232,12 +244,14 @@ export function PriceCalculator() {
         </div>
 
         {finalPrice !== null && (
-          <PriceDisplay
-            price={finalPrice}
-            currency={t('currency')}
-            label={t('finalPrice')}
-            lang={lang}
-          />
+          <div className="mt-6 p-4 rounded-xl bg-gradient-to-r from-green-500/20 to-blue-500/20">
+            <PriceDisplay
+              price={finalPrice}
+              currency={t('currency')}
+              label={t('finalPrice')}
+              lang={lang}
+            />
+          </div>
         )}
       </Card>
     </div>
